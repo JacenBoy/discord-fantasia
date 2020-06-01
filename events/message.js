@@ -42,7 +42,10 @@ module.exports = async (client, message) => {
 
   // Check to make sure the user has the correct permissions to run the
   // command and give a helpful error message if they don't.
-  // Permissions are not yet implemented, so for now just run the command.
+  if (message.guild && !message.member.hasPermission(cmd.config.permissions)) {
+    if (!client.checkPermissions(cmd.config.permLevel, message.author.id)) return message.channel.send("You do not have permission to run this command.");
+  }
+  if (!message.guild && !client.checkPermissions(cmd.config.permLevel, message.author.id)) return message.channel.send("You do not have permission to run this command.");
 
   // If we've made it this far, it should be fine to run the command. Log
   // the attempt and run the command.

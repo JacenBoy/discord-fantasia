@@ -26,4 +26,52 @@ module.exports = (client) => {
       return `Unable to load command ${commandName}: ${ex}`;
     }
   };
+
+  // checkPermissions - A very basic check to make sure users have the
+  // correct permissions to run a command. Probably very inefficient.
+  client.checkPermissions = (permLevel, userID) => {
+    switch (permLevel) {
+      case "User":
+        // Always return true for the User check
+        return true;
+      case "Support":
+        // Check if the user is listed as "Support" or higher in the
+        // config file.
+        if (client.config.support.includes(userID)) return true;
+      case "Admin":
+        // Check if the user is listed as "Admin" or higher
+        if (client.config.admins.includes(userID)) return true;
+      case "Owner":
+        // Check if the user is the bot owner
+        if (client.config.ownerID == userID) return true;
+      default:
+        // If we've fallen through this far, the user does not have the
+        // correct permissions.
+        return false;
+    }
+  };
+
+  // client.clean - Useful to remove sensitive information (i.e. the bot
+  // token) from message output. Only really used for the eval command,
+  // but used for code readability.
+  client.clean = async (client, text) => {
+    if (text && text.constructor.name == "Promise")
+      text = await text;
+    if (typeof text !== "string")
+      text = require("util").inspect(text, {depth: 1});
+
+    text = text
+      .replace(/`/g, "`" + String.fromCharCode(8203))
+      .replace(/@/g, "@" + String.fromCharCode(8203))
+      .replace(client.token, "mfa.VkO_2G4Qv3T--NO--lWetW_tjND--TOKEN--QFTm6YGtzq9PH--4U--tG0");
+
+    return text;
+  };
+
+  // client.colorInt - Turn a standard hex color code into a decinal for
+  // embeds. Mostly for readability, but very convenient.
+  client.colorInt = (hexin) => {
+    if (hexin.startsWith("#")) return parseInt(hexin.split("#")[1], 16);
+    else return parseInt(hexin, 16);
+  };
 };
