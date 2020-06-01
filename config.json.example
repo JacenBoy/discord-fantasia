@@ -1,0 +1,12 @@
+{
+  "ownerID": "123456789123456",
+  "admins": [],
+  "support": [],
+
+  "token": "mfa.VkO_2G4Qv3T--NO--lWetW_tjND--TOKEN--QFTm6YGtzq9PH--4U--tG0",
+  "mongouri": "",
+
+  "defaultSettings" : {
+    "prefix": "f-"
+  }
+}
