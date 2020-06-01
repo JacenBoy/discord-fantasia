@@ -53,6 +53,20 @@ module.exports = (client) => {
     return false;
   };
 
+  // client.getSettings - Retrieve customizable bot settings from the
+  // MongoDB database. This allows server owners to adjust things like the
+  // bot prefix.
+  client.getSettings = async (serverID) => {
+    const mongoose = require("mongoose");
+    const servers = require("../models/server.js");
+    const serverExists = await servers.exists({"_id": serverID});
+    if (!serverExists) {
+      await servers.updateOne({"_id": serverID}, {"prefix": client.config.defaultSettings.prefix}, {"upsert": true});
+    }
+    const serverConfig = await servers.findOne({_id: serverID});
+    return serverConfig;
+  };
+
   // checkPermissions - A very basic check to make sure users have the
   // correct permissions to run a command. Probably very inefficient.
   client.checkPermissions = (permLevel, userID) => {

@@ -10,9 +10,7 @@ module.exports = async (client, message) => {
 
   // We're storing our server-level configurations in MongoDB, so pull the
   // bot prefix from there.
-  // MongoDB configs are not implemented yet, so just pull from the config
-  // file for now.
-  const settings = client.config.defaultSettings;
+  const settings = message.guild ? await client.getSettings(message.guild.id) : client.config.defaultSettings;
 
   // If the user pings the bot, send them the prefix.
   const prefixMention = new RegExp(`^<@!?${client.user.id}>( |)$`);
