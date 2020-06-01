@@ -27,6 +27,32 @@ module.exports = (client) => {
     }
   };
 
+  // client.unloadCommand - The opposite of loadCommand. Removes the
+  // command from memory so it can be loaded again. Useful for the reload
+  // and reboot commands.
+  client.unloadCommand = async (commandName) => {
+    let command;
+    if (client.commands.has(commandName)) {
+      command = client.commands.get(commandName);
+    } else if (client.aliases.has(commandName)) {
+      command = client.commands.get(client.aliases.get(commandName));
+    }
+    if (!command) return `The command \`${commandName}\` doesn"t seem to exist, nor is it an alias. Try again!`;
+  
+    if (command.shutdown) {
+      await command.shutdown(client);
+    }
+    const mod = require.cache[require.resolve(`../commands/${commandName}`)];
+    delete require.cache[require.resolve(`../commands/${commandName}.js`)];
+    for (let i = 0; i < mod.parent.children.length; i++) {
+      if (mod.parent.children[i] === mod) {
+        mod.parent.children.splice(i, 1);
+        break;
+      }
+    }
+    return false;
+  };
+
   // checkPermissions - A very basic check to make sure users have the
   // correct permissions to run a command. Probably very inefficient.
   client.checkPermissions = (permLevel, userID) => {
@@ -74,4 +100,19 @@ module.exports = (client) => {
     if (hexin.startsWith("#")) return parseInt(hexin.split("#")[1], 16);
     else return parseInt(hexin, 16);
   };
+
+  // These handle uncaught exceptions/unhandled rejections and give a
+  // little extra information about the errors.
+  process.on("uncaughtException", (err) => {
+    const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, "g"), "./");
+    client.logger.error(`Uncaught Exception: ${errorMsg}`);
+    // It's best practice to let your code crash on unhandled exceptions.
+    // Not doing so could leave your bot in an inconsistent or buggy
+    // state. For the sake of convenience, though, I'm not doing this.
+    //process.exit(1);
+  });
+
+  process.on("unhandledRejection", err => {
+    client.logger.error(`Unhandled rejection: ${err}`);
+  });
 };
