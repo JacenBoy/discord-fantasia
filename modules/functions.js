@@ -109,16 +109,22 @@ module.exports = (client) => {
   };
 
   // client.ensureAccount - Check if the user has a profile in the
-  // database. If not, create one.
+  // database. If not, create one. Also ensure required fields are
+  // created if they don't exist already (i.e. after an update).
   client.ensureAccount = async (userID) => {
     const users = require("../models/user.js");
     const userExists = await users.exists({"_id": userID});
     if (!userExists) {
       await users.updateOne({"_id": userID}, {
         "money": client.config.defaultProfile.money,
-        "lastDaily": "0",
+        "totalPickup": "0",
         "cards": []
       }, {"upsert": true});
+    }
+
+    const user = await users.findOne({"_id": userID});
+    if (!user.totalPickup) {
+      await user.updateOne({"totalPickup": 0});
     }
   };
 

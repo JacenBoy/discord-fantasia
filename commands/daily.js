@@ -1,5 +1,5 @@
 // Add a random amount of currency to the user's account. This can be done
-// one per day.
+// once per day.
 
 // Load required libraries/utilities
 const users = require("../models/user.js");
@@ -30,5 +30,5 @@ exports.run = async (client, message, args) => {
   const newMoney = user.money + rnd;
   const dailyTime = moment(new Date(), "x");
   await users.updateOne({"_id": message.author.id}, {"money": newMoney, "lastDaily": dailyTime});
-  message.channel.send(`${rnd} credits have been added to your account.`);
+  message.channel.send(`${rnd} credits have been added to your account. You may do this once per day.`);
 };
