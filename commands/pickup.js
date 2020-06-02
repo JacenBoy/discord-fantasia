@@ -33,5 +33,5 @@ exports.run = async (client, message, args) => {
   const pickupTime = moment(new Date(), "x");
   await users.updateOne({"_id": message.author.id}, {"money": newMoney, "lastPickup": pickupTime, "totalPickup": totalPickup});
   if (rnd == 0) message.channel.send(`You weren't able to find anything the ground. You can try again ${client.config.maxPickup - totalPickup} ${client.config.maxPickup - totalPickup == 1 ? "time" : "times"} before the next reset.`);
-  else message.channel.send(`You picked up ${rnd} credits from the ground. You can do this ${client.config.maxPickup - totalPickup} ${client.config.maxPickup - totalPickup == 1 ? "time" : "times"} before the next reset.`);
+  else message.channel.send(`You picked up ${rnd} ${rnd == 1 ? "credit" : "credits"} from the ground. You can do this ${client.config.maxPickup - totalPickup} ${client.config.maxPickup - totalPickup == 1 ? "time" : "times"} before the next reset.`);
 };

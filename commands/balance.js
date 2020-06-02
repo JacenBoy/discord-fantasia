@@ -4,7 +4,7 @@
 const users = require("../models/user.js");
 
 exports.name = "balance";
-exports.aliases = ["bal", "money", "wallet"];
+exports.aliases = ["bal", "money", "wallet", "credits"];
 exports.config = {
   "guildOnly": false,
   "permLevel": "User",
