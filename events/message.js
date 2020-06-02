@@ -40,8 +40,9 @@ module.exports = async (client, message) => {
 
   // Check to make sure the user has the correct permissions to run the
   // command and give a helpful error message if they don't.
-  if (message.guild && !message.member.hasPermission(cmd.config.permissions)) {
-    if (!client.checkPermissions(cmd.config.permLevel, message.author.id)) return message.channel.send("You do not have permission to run this command.");
+  if (message.guild && !client.checkPermissions(cmd.config.permLevel, message.author.id)) {
+    if (cmd.config.permissions.length == 0) return message.channel.send("You do not have permission to run this command.");
+    if (cmd.config.permissions.length > 0 && !message.member.hasPermission(cmd.config.permissions)) return message.channel.send("You do not have permission to run this command.");
   }
   if (!message.guild && !client.checkPermissions(cmd.config.permLevel, message.author.id)) return message.channel.send("You do not have permission to run this command.");
 
