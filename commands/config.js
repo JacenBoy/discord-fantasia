@@ -18,7 +18,7 @@ exports.run = async (client, message, args) => {
     case "prefix":
       const newPrefix = args[1] ? args[1] : client.config.defaultSettings.prefix;
       await servers.updateOne({"_id": message.guild.id}, {"prefix": newPrefix}, {"upsert": true});
-      message.channel.send("The prefix has been updated.");
+      message.channel.send(`The prefix has been updated to \`${newPrefix}\`.`);
       break;
     default:
       message.channel.send("This is not a configurable setting.");
