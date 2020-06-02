@@ -108,6 +108,20 @@ module.exports = (client) => {
     return text;
   };
 
+  // client.ensureAccount - Check if the user has a profile in the
+  // database. If not, create one.
+  client.ensureAccount = async (userID) => {
+    const users = require("../models/user.js");
+    const userExists = await users.exists({"_id": userID});
+    if (!userExists) {
+      await users.updateOne({"_id": userID}, {
+        "money": client.config.defaultProfile.money,
+        "lastDaily": "0",
+        "cards": []
+      }, {"upsert": true});
+    }
+  };
+
   // client.colorInt - Turn a standard hex color code into a decinal for
   // embeds. Mostly for readability, but very convenient.
   client.colorInt = (hexin) => {
