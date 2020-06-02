@@ -22,12 +22,13 @@ exports.run = async (client, message, args) => {
   const nextDaily = moment(lastDaily, "x").add(1, "days");
 
   if (moment() <= nextDaily) {
-    message.channel.send(`You have already claimed your daily reward for the day. Try again in ${moment.duration(nextDaily.diff(moment())).format("H [hrs] m [mins] s [secs]")}`);
+    message.channel.send(`You have already claimed your daily reward. Try again in ${moment.duration(nextDaily.diff(moment())).format("H [hrs] m [mins] s [secs]")}`);
     return;
   }
 
-  const newMoney = user.money + 100;
+  const rnd = client.randInt(1,10) * 100;
+  const newMoney = user.money + rnd;
   const dailyTime = moment(new Date(), "x");
   await users.updateOne({"_id": message.author.id}, {"money": newMoney, "lastDaily": dailyTime});
-  message.channel.send(`${"100"} credits have been added to your account.`);
+  message.channel.send(`${rnd} credits have been added to your account.`);
 };

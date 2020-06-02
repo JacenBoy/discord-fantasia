@@ -129,6 +129,11 @@ module.exports = (client) => {
     else return parseInt(hexin, 16);
   };
 
+  // client.randInt - Generate a random integer.
+  client.randInt = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1) ) + min;
+  };
+
   // These handle uncaught exceptions/unhandled rejections and give a
   // little extra information about the errors.
   process.on("uncaughtException", (err) => {
