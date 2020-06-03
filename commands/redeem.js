@@ -26,6 +26,7 @@ exports.run = async (client, message, args) => {
     case "money":
       await user.updateOne({"money": user.money + redeem.amount});
       await redeem.updateOne({"redeemed": true});
+      client.logger.log(`${message.author.username} (${message.author.id}) has redeemed ${redeem.amount} credits from redeem code ${redeem._id}`);
       message.channel.send(`${redeem.amount} credits have been added to your account.`);
       break;
     default:

@@ -21,7 +21,7 @@ exports.run = async (client, message, args) => {
         await client.ensureAccount(userID);
         const user = await users.findOne({"_id": userID});
         const newMoney = user.money + parseInt(args[1]);
-        await users.updateOne({"_id": userID}, {"money": newMoney});
+        await user.updateOne({"money": newMoney});
       }
       client.logger.log(`${message.author.username} (${message.author.id}) has added ${args[1]} credits to the following accounts: ${args.slice(2).join(", ")}`);
       message.channel.send(`${args[1]} credits have been added to the specified accounts.`);

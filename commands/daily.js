@@ -29,6 +29,6 @@ exports.run = async (client, message, args) => {
   const rnd = client.randInt(1,10) * 100;
   const newMoney = user.money + rnd;
   const dailyTime = moment(new Date(), "x");
-  await users.updateOne({"_id": message.author.id}, {"money": newMoney, "lastDaily": dailyTime});
+  await user.updateOne({"money": newMoney, "lastDaily": dailyTime});
   message.channel.send(`${rnd} credits have been added to your account. You may do this once per day.`);
 };

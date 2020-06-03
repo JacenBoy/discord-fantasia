@@ -24,9 +24,10 @@ exports.run = async (client, message, args) => {
       if (args[1] > user.money) return message.channel.send("You do not have enough credits to complete this command.");
 
       const serial = await client.generateRedeem("money", args[1]);
+      await user.updateOne({"money": user.money - args[1]});
+      client.logger.log(`${message.author.username} (${message.author.id}) has generated redeem code ${serial} for ${args[1]} credits`);
       message.author.send(`Your gift ID is \`${serial}\`. Send this code to the person you would like to gift to. This code expires in 7 days.`);
       message.channel.send("A code has been sent to you via DM. Share this code with your gift recipient.");
-      await user.updateOne({"money": user.money - args[1]});
       break;
     default:
       message.channel.send("That is not an item that you can gift to another player.");
