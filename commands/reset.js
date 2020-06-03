@@ -33,15 +33,6 @@ exports.run = async (client, message, args) => {
       client.logger.log(`${message.author.username} (${message.author.id}) has reset the hourly reward timer for the following accounts: ${args.slice(1).join(", ")}`);
       message.channel.send("Hourly reward timer has been reset for the specified users.");
       break;
-    case "pickup":
-      args.slice(1).forEach(async (u) => {
-        const userID = u.match(/\d+/gi);
-        await client.ensureAccount(userID);
-        await users.updateOne({"_id": userID}, {"lastPickup": "0", "totalPickup": 0});
-      });
-      client.logger.log(`${message.author.username} (${message.author.id}) has reset the pickup reward timer for the following accounts: ${args.slice(1).join(", ")}`);
-      message.channel.send("Pickup reward timer has been reset for the specified users.");
-      break;
     default:
       message.channel.send("That is not a timer that can be reset.");
       break;
