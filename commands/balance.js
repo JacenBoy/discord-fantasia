@@ -12,8 +12,10 @@ exports.config = {
 };
 
 exports.run = async (client, message, args) => {
-  await client.ensureAccount(message.author.id);
+  var userID = message.author.id;
 
-  const user = await users.findOne({"_id": message.author.id});
+  await client.ensureAccount(userID);
+
+  const user = await users.findOne({"_id": userID});
   message.channel.send(`You currently have ${user.money} credits in your account.`);
 };

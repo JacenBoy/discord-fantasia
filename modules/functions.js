@@ -128,6 +128,30 @@ module.exports = (client) => {
     }
   };
 
+  // client.generateRedeem - Generate a code to allow users to send gifts
+  // to other users, and add this code to the database.
+  client.generateRedeem = async (redeemType, redeemAmount, redeemSlug) => {
+    const moment = require("moment");
+    const luhnify = require("luhnify");
+    const redeems = require("../models/redeem.js");
+    switch (redeemType.toLowerCase()) {
+      case "money":
+        var foundSlot = false;
+        while (!foundSlot) {
+          var serial = luhnify("########");
+          if (await redeems.exists({"_id": serial})) {
+            const redeem = await redeems.findOne({"_id": serial});
+            if (redeem.redeemed == true || moment() > moment(redeem.created, "x").add(7, "days")) foundSlot = true;
+          } else foundSlot = true;
+        }
+        await redeems.updateOne({"_id": serial}, {"type": "money", "amount": redeemAmount, "created": moment(new Date(), "x"), "redeemed": false}, {"upsert": true});
+        return serial;
+      default:
+        // There was an error calling the function, so return false
+        return false;
+    }
+  };
+
   // client.colorInt - Turn a standard hex color code into a decinal for
   // embeds. Mostly for readability, but very convenient.
   client.colorInt = (hexin) => {
