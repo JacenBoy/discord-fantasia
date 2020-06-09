@@ -15,7 +15,7 @@ exports.config = {
 
 exports.run = async (client, message, args) => {
   try {
-    const updateResult = await exec("git pull origin");
+    const updateResult = await exec("git pull origin && npm update");
     if (updateResult.error) throw updateResult.error.message;
     if (updateResult.stderr) throw updateResult.stderr;
     client.logger.log(`Console output: ${updateResult.stdout}`);

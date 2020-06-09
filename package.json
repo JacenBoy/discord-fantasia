@@ -1,13 +1,17 @@
 {
   "name": "discord-fantasia",
   "version": "1.0.0",
-  "description": "A completely free card collecting multiverse",
+  "description": "A completely free card-collecting multiverse",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
   "author": "JacenBoy <james@jacenboy.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JacenBoy/discord-fantasia.git"
+  },
   "license": "Apache-2.0",
   "dependencies": {
     "chalk": "^4.0.0",
@@ -15,7 +19,7 @@
     "luhnify": "^1.1.1",
     "moment": "^2.26.0",
     "moment-duration-format": "^2.3.2",
-    "mongoose": "^5.9.16",
+    "mongoose": "^5.9.17",
     "node-fetch": "^2.6.0"
   }
 }

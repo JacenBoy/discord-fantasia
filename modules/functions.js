@@ -108,6 +108,19 @@ module.exports = (client) => {
     return text;
   };
 
+  // client.awaitReply - Wait for a response from a user. Useful when you
+  // need to be able to ask for additional information.
+  client.awaitReply = async (msg, question, limit = 60000) => {
+    const filter = m => m.author.id === msg.author.id;
+    await msg.channel.send(question);
+    try {
+      const collected = await msg.channel.awaitMessages(filter, { max: 1, time: limit, errors: ["time"] });
+      return collected.first().content;
+    } catch (e) {
+      return false;
+    }
+  };
+
   // client.ensureAccount - Check if the user has a profile in the
   // database. If not, create one. Also ensure required fields are
   // created if they don't exist already (i.e. after an update).

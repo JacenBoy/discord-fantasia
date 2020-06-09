@@ -12,7 +12,7 @@ exports.config = {
 };
 
 exports.run = async (client, message, args) => {
-  var userID = message.author.id;
+  const userID = message.author.id;
 
   await client.ensureAccount(userID);
 
